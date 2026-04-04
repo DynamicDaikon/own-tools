@@ -4,17 +4,18 @@ set -euo pipefail
 # ---- 引数チェック ----
 # 使い方: ./downloadCloudWatch.sh <log-stream-name>
 # 例:     ./downloadCloudWatch.sh bo-dev-batch-jobdef-cmn/default/09d3f80e99cb4e0d9e789f3ffe501f42
-if [ $# -lt 1 ]; then
-  echo "Usage: $0 <log-stream-name>" >&2
-  echo "  例: $0 bo-dev-batch-jobdef-cmn/default/09d3f80e99cb4e0d9e789f3ffe501f42" >&2
+if [ $# -ne 2 ]; then
+  echo "Usage: $0 <log-event> <log-stream-name>" >&2
+  echo "  例: $0 aws/job/batch bo-dev-batch-jobdef-cmn/default/09d3f80e99cb4e0d9e789f3ffe501f42" >&2
   exit 1
 fi
 
 # ---- 設定 ----
 REGION="ap-northeast-1"
-LOG_GROUP="/aws/batch/job"
-# 第1引数: stream-name / default / hash
-LOG_STREAM="$1"
+# 第1引数：ロググループ "/aws/batch/job"
+LOG_GROUP=$1
+# 第2引数: stream-name / default / hash
+LOG_STREAM="$2"
 
 # 取得期間を限定したい場合は下面を編集（空にするとストリーム全域を取得する）
 # 例: FROM_HUMAN='2026-03-01 00:00:00 +09:00'
